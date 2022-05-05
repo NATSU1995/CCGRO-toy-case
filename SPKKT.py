@@ -13,11 +13,11 @@ for i in range(3):
 x = SP.addVars(3, 3, lb=0, obj=np.array(C) * -1, vtype=GRB.CONTINUOUS, name='x')
 g = SP.addVars(3, lb=0, ub=1.0, name='g')
 d = [206 + 40 * g[0], 274 + 40 * g[1], 220 + 40 * g[2]]
-α = SP.addVars(3, 3, vtype=GRB.BINARY, name='α')
-β = SP.addVars(3, vtype=GRB.BINARY, name='β')
-γ = SP.addVars(3, vtype=GRB.BINARY, name='γ')
-λ = SP.addVars(3, vtype=GRB.CONTINUOUS, name='λ')
-π = SP.addVars(3, vtype=GRB.CONTINUOUS, name='π')
+α = SP.addVars(3, 3, vtype=GRB.BINARY, name='alpha')
+β = SP.addVars(3, vtype=GRB.BINARY, name='beta')
+γ = SP.addVars(3, vtype=GRB.BINARY, name='gamma')
+λ = SP.addVars(3, vtype=GRB.CONTINUOUS, name='lambda')
+π = SP.addVars(3, vtype=GRB.CONTINUOUS, name='pi')
 A = [252, 0, 520]
 S1 = SP.addConstrs(((quicksum(x[i, j] for j in range(3))) <= z[i].x for i in range(3)), name='SPcolumn1')
 S2 = SP.addConstrs(((quicksum(x[i, j] for i in range(3))) >= d[j] for j in range(3)), name='SPcolumn2')
@@ -34,12 +34,11 @@ S9 = SP.addConstrs(((z[i].x - quicksum(x[i, j] for j in range(3))) <= (1 - γ[i]
                    name='SPcolumn9')
 SP.addConstr(quicksum(g[i] for i in range(2)) <= 1.2, name='SP10')
 SP.addConstr(quicksum(g[i] for i in range(3)) <= 1.8, name='SP11')
-SP.write("SP.lp")
+SP.write("SPkkt.lp")
 SP.optimize()
 d = [dl[i] + du[i] * g[i].x for i in range(3)]
 Q = SP.objval
 UB = LB - η.x - Q
-
-
+print('UB: '+str(UB))
 print("0")
 

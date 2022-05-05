@@ -6,8 +6,8 @@ Time:2019-3-1
 Place of creation:iPso
 
 """
-
 from SPKKT import *
+
 while UB - LB > 10e-4:
     xx = MP.addVars(3, 3, lb=0, vtype=GRB.CONTINUOUS, name='x')
     Column2 = MP.addConstrs(((quicksum(xx[i, j] for j in range(3))) <= z[i] for i in range(3)), name='column2')
@@ -15,6 +15,7 @@ while UB - LB > 10e-4:
     Column7 = MP.addConstr(quicksum(C[i][j] * xx[i, j] for i in range(3) for j in range(3)) <= η)
     MP.optimize()
     LB = MP.objval
+    print('LB: '+str(LB))
     SP.remove(SP.getConstrs()[0:6])
     SP.remove(SP.getConstrs()[15:23])
     SP.remove(SP.getConstrs()[36:39])
@@ -29,8 +30,8 @@ while UB - LB > 10e-4:
         for j in range(3):
             Mx[i][j] = min(D[j], z[i].x)
     S4 = SP.addConstrs((Mx[i][j] * α[i, j] >= x[i, j] for i in range(3) for j in range(3)), name='SPcolumn4')
-    SP.write('SP.lp')
+    SP.write('CCGkkt_'+str(k)+'.lp')
     SP.optimize()
     UB = LB - η.x - SP.objval
+    print('UB: '+str(UB))
     k = k + 1
-print(LB)

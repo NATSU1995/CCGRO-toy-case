@@ -8,10 +8,12 @@ while UB - LB > 10e-4:
     Column7 = MP.addConstr(quicksum(C[i][j] * xx[i, j] for i in range(3) for j in range(3)) <= η)
     MP.optimize()
     LB = MP.objval  # update LB
-
+    print('LB: '+str(LB))
     obj = quicksum(dl[i] * r[i] + du[i] * w[i] - z[i].x * t[i] for i in range(3))  # update SDSP's obj
-    SDSP.setObjective(obj, GRB.MAXIMIZE)
-    SDSP.optimize()
-    UB = min(UB, LB - η.x + SDSP.objval)  # update UB
+    SPSD.setObjective(obj, GRB.MAXIMIZE)
+    SPSD.write('CCGsd_' + str(k) + '.lp')
+    SPSD.optimize()
+    UB = min(UB, LB - η.x + SPSD.objval)  # update UB
+    print('UB: '+str(UB))
     k = k + 1  # Iterative counting
-print(LB)
+print(UB)

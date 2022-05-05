@@ -25,11 +25,11 @@ g = MP.addVars(3, lb=0, ub=1.0, name='g')
 
 # addConstrs
 Column1 = MP.addConstrs((z[i] <= 800 * y[i] for i in range(3)), name='column1')
-Column4 = MP.addConstr(quicksum(z[i] for i in range(3)) >= 772, name='z')
+Column4 = MP.addConstr(quicksum(z[i] for i in range(3)) >= 772, name='z') #772=206+274+220+40*1.8
 Column5 = MP.addConstr(quicksum(g[i] for i in range(2)) <= 1.2, name='column5')
 Column6 = MP.addConstr(quicksum(g[i] for i in range(3)) <= 1.8, name='column6')
 
 MP.write("MP.lp")  # model print and visual inspection model,can open it with Notepad++
 MP.optimize()  # Solve Model
 LB = MP.objval  # get optimum value of model
-
+print('LB: '+str(LB))
