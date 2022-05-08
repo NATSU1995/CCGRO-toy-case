@@ -19,3 +19,11 @@ In Chinese
 我一直想出一期关于这篇文章深入剖析的文章，这个在我的日程上了，一定会出的，只是我个人拖延症可能会有些慢。
 
 ###
+
+Created by Yun:
+
+ccgCode.ipynb
+
+deterministicVersion.ipynb
+
+bdCode.ipynb
